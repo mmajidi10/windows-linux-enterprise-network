@@ -1,0 +1,16 @@
+$TTL 86400
+
+@       IN SOA  u3.sub.mmajidi8.net. admin.sub.mmajidi8.net. (
+                2026080702
+                3600
+                1800
+                604800
+                86400 )
+
+        IN NS   u3.sub.mmajidi8.net.
+
+3       IN PTR  u1.mmajidi8.net.
+4       IN PTR  w1.mmajidi8.net.
+5       IN PTR  u2.mmajidi8.net.
+67      IN PTR  u2.sub.mmajidi8.net.
+68      IN PTR  u3.sub.mmajidi8.net.

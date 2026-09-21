@@ -1,0 +1,56 @@
+acl "internal" {
+    127.0.0.1;
+    192.168.119.0/24;
+};
+
+options {
+    directory "/var/cache/bind";
+
+    // CIS 3.1
+    blackhole {
+        10.0.0.0/8;
+        172.16.0.0/12;
+
+        !192.168.119.0/24;
+        192.168.0.0/16;
+
+        169.254.0.0/16;
+        224.0.0.0/8;
+    };
+
+    // CIS 3.2
+    recursion yes;
+
+    allow-recursion {
+        localhost;
+        internal;
+    };
+
+    // CIS 3.3
+    allow-query {
+        localhost;
+        internal;
+    };
+
+    // CIS 3.4
+    allow-query-cache {
+        localhost;
+        internal;
+    };
+
+    // Forward external queries to U1 caching resolver
+    forwarders {
+        192.168.119.3;
+    };
+
+    forward only;
+
+    dnssec-validation auto;
+
+    listen-on {
+        127.0.0.1;
+        192.168.119.68;
+    };
+
+    listen-on-v6 { none; };
+};

@@ -1,0 +1,29 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "sub.mmajidi8.net" {
+    type master;
+    file "/etc/bind/db.sub.mmajidi8.net";
+};
+
+zone "119.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.119.168.192";
+};
+
+zone "mmajidi8.net" {
+    type slave;
+    masters { 192.168.119.4; };
+    file "/var/cache/bind/db.mmajidi8.net";
+};
+
+zone "_msdcs.mmajidi8.net" {
+    type slave;
+    masters { 192.168.119.4; };
+    file "/var/cache/bind/db._msdcs.mmajidi8.net";
+};

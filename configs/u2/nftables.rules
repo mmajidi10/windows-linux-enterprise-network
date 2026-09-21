@@ -1,0 +1,64 @@
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet filter {
+
+    chain input {
+        type filter hook input priority 0; policy drop;
+
+        # 4.3.6
+        iif "lo" accept
+        ip saddr 127.0.0.0/8 counter drop
+        ip6 saddr ::1 counter drop
+
+        # 4.3.7
+        ip protocol tcp ct state established accept
+        ip protocol udp ct state established accept
+
+        ct state established,related accept
+
+        # DHCP Relay
+        iif "enp0s8" udp sport 68 udp dport 67 accept
+        iif "enp0s3" ip saddr 192.168.119.4 udp sport 67 udp dport 67 accept
+
+        ip saddr 192.168.119.4 tcp dport 22 accept
+
+        # Samba access
+        ip saddr 192.168.119.0/24 tcp dport { 139, 445 } accept
+        ip saddr 192.168.119.0/24 udp dport { 137, 138 } accept
+
+        ip saddr 192.168.119.0/24 ip protocol icmp accept
+    }
+
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+
+        ct state established,related accept
+
+        # sub1 to sub2
+        iif "enp0s3" oif "enp0s8" \
+            ip saddr 192.168.119.0/26 \
+            ip daddr 192.168.119.64/26 accept
+
+        # sub2 to sub1
+        iif "enp0s8" oif "enp0s3" \
+            ip saddr 192.168.119.64/26 \
+            ip daddr 192.168.119.0/26 accept
+
+        iif "enp0s8" oif "enp0s3" \
+            ip saddr 192.168.119.64/26 accept
+    }
+
+    chain output {
+        type filter hook output priority 0; policy drop;
+
+        oif "lo" accept
+
+        # 4.3.7 outbound
+        ip protocol tcp ct state established,related,new accept
+        ip protocol udp ct state established,related,new accept
+
+        ip protocol icmp accept
+    }
+}

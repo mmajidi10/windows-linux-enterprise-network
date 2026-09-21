@@ -154,7 +154,7 @@ DNS services are distributed across W1, U1, and U3 to support Active Directory, 
 
 | Server | DNS Role |
 |---|---|
-| W1 (`192.168.119.4`) | Primary AD-integrated DNS for `mmajidi8.net` and `\_msdcs.mmajidi8.net`; forwards external queries to U1 |
+| W1 (`192.168.119.4`) | Primary AD-integrated DNS for `mmajidi8.net` and `_msdcs.mmajidi8.net`; forwards external queries to U1 |
 | U1 (`192.168.119.3`) | Caching recursive DNS resolver for external name resolution |
 | U3 (`192.168.119.68`) | Primary DNS for `sub.mmajidi8.net` and the reverse zone; secondary DNS for the AD zones |
 
@@ -164,7 +164,7 @@ DNS services are distributed across W1, U1, and U3 to support Active Directory, 
 
 
 
-W1 hosts the primary AD-integrated DNS zones for `mmajidi8.net` and `\_msdcs.mmajidi8.net`. These zones provide internal name resolution and the DNS service records required by domain members to locate Active Directory services such as domain controllers and LDAP.
+W1 hosts the primary AD-integrated DNS zones for `mmajidi8.net` and `_msdcs.mmajidi8.net`. These zones provide internal name resolution and the DNS service records required by domain members to locate Active Directory services such as domain controllers and LDAP.
 
 
 
@@ -172,7 +172,7 @@ W1 hosts the primary AD-integrated DNS zones for `mmajidi8.net` and `\_msdcs.mma
 
 
 
-![Active Directory \_msdcs zone](screenshots/dns/msdcs-zone.png)
+![Active Directory _msdcs zone](screenshots/dns/msdcs-zone.png)
 
 
 
@@ -528,15 +528,15 @@ The affected file permissions were then corrected to `660`, aligning the file wi
 
 
 
-While integrating U2 with Active Directory, domain discovery depended on the DNS records stored within the `\_msdcs.mmajidi8.net` zone.
+While integrating U2 with Active Directory, domain discovery depended on the DNS records stored within the `_msdcs.mmajidi8.net` zone.
 
 
 
-U3 was configured as a secondary DNS server for the main `mmajidi8.net` zone, but Active Directory also maintains a separate `\_msdcs.mmajidi8.net` zone containing service records used by domain members to locate domain controllers and services such as LDAP.
+U3 was configured as a secondary DNS server for the main `mmajidi8.net` zone, but Active Directory also maintains a separate `_msdcs.mmajidi8.net` zone containing service records used by domain members to locate domain controllers and services such as LDAP.
 
 
 
-The DNS configuration was updated so that U3 also maintained a secondary copy of the `\_msdcs.mmajidi8.net` zone through a zone transfer from W1.
+The DNS configuration was updated so that U3 also maintained a secondary copy of the `_msdcs.mmajidi8.net` zone through a zone transfer from W1.
 
 
 

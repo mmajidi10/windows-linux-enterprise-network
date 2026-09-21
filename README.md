@@ -1,4 +1,4 @@
-\# Windows/Linux Enterprise Network
+# Windows/Linux Enterprise Network
 
 
 
@@ -10,11 +10,11 @@ The project includes Active Directory Domain Services, DNS, DHCP and DHCP relay,
 
 
 
-\## Network Topology
+## Network Topology
 
 
 
-!\[Windows/Linux Enterprise Network Topology](diagrams/network-topology.png)
+![Windows/Linux Enterprise Network Topology](diagrams/network-topology.png)
 
 
 
@@ -23,25 +23,14 @@ The environment is divided into two `/26` internal subnets connected through a L
 
 
 | System | Operating System | IP Address | Primary Role |
-
 |---|---|---|---|
-
 | W1 | Windows Server 2022 | `192.168.119.4` (Static) | Domain Controller, DNS, DHCP |
-
 | U1 | Ubuntu Server | `192.168.119.3` (Static) | Gateway, Firewall, Caching DNS Resolver |
-
 | U2 | Ubuntu Server | `192.168.119.5` / `192.168.119.67` (Static) | Router, DHCP Relay, Samba File Server |
-
 | U3 | Ubuntu Server | `192.168.119.68` (Static) | DNS Server |
-
 | WS-FIN-01 | Windows 11 | `192.168.119.10` (DHCP) | Finance Workstation |
-
 | WS-HR-01 | Windows 11 | `192.168.119.71` (DHCP) | HR Workstation |
-
 | WS-IT-01 | Windows 11 | `192.168.119.100` (DHCP Reservation) | IT Workstation |
-
-
-
 
 
 ## Active Directory
@@ -61,13 +50,9 @@ Test user accounts were created for each department:
 
 
 | User | Department | Workstation |
-
 |---|---|---|
-
 | Sarah Dawson | Finance | WS-FIN-01 |
-
 | Daniel Chen | HR | WS-HR-01 |
-
 | John Smith | IT | WS-IT-01 |
 
 
@@ -76,19 +61,19 @@ All three Windows 11 workstations were joined to the `mmajidi8.net` domain and a
 
 
 
-\### Active Directory Users and Groups
+### Active Directory Users and Groups
 
 
 
-!\[Active Directory users and groups](screenshots/active-directory/domain-users.png)
+![Active Directory users and groups](screenshots/active-directory/domain-users.png)
 
 
 
-\### Domain-Joined Workstations
+### Domain-Joined Workstations
 
 
 
-!\[Domain-joined Windows workstations](screenshots/active-directory/domain-workstations.png)
+![Domain-joined Windows workstations](screenshots/active-directory/domain-workstations.png)
 
 
 
@@ -96,7 +81,7 @@ All three Windows 11 workstations were joined to the `mmajidi8.net` domain and a
 
 
 
-\## DHCP and DHCP Relay
+## DHCP and DHCP Relay
 
 
 
@@ -105,11 +90,8 @@ W1 provides centralized DHCP services for both internal subnets. Separate DHCP s
 
 
 | Scope | Address Pool | Default Gateway | DNS Servers |
-
 |---|---|---|---|
-
 | Subnet 1 (`192.168.119.0/26`) | `192.168.119.10–60` | `192.168.119.3` (U1) | `192.168.119.4`, `192.168.119.68` |
-
 | Subnet 2 (`192.168.119.64/26`) | `192.168.119.70–120` | `192.168.119.67` (U2) | `192.168.119.4`, `192.168.119.68` |
 
 
@@ -118,11 +100,11 @@ Clients on Subnet 1 can communicate directly with the DHCP server on W1. Because
 
 
 
-!\[DHCP scopes configured on W1](screenshots/dhcp/dhcp-scopes.png)
+![DHCP scopes configured on W1](screenshots/dhcp/dhcp-scopes.png)
 
 
 
-\### DHCP Relay
+### DHCP Relay
 
 
 
@@ -130,7 +112,7 @@ U2 listens for DHCP traffic on both of its network interfaces and forwards reque
 
 
 
-!\[DHCP relay configuration on U2](screenshots/dhcp/u2-dhcp-relay.png)
+![DHCP relay configuration on U2](screenshots/dhcp/u2-dhcp-relay.png)
 
 
 
@@ -138,11 +120,11 @@ WS-HR-01 successfully received a dynamic address on Subnet 2 through the DHCP re
 
 
 
-!\[Relayed DHCP lease on WS-HR-01](screenshots/dhcp/ws-hr-relayed-lease.png)
+![Relayed DHCP lease on WS-HR-01](screenshots/dhcp/ws-hr-relayed-lease.png)
 
 
 
-\### DHCP Reservation
+### DHCP Reservation
 
 
 
@@ -150,11 +132,11 @@ A DHCP reservation was configured for WS-IT-01, assigning `192.168.119.100` to t
 
 
 
-!\[DHCP reservation for WS-IT-01](screenshots/dhcp/ws-it-reservation.png)
+![DHCP reservation for WS-IT-01](screenshots/dhcp/ws-it-reservation.png)
 
 
 
-!\[Reserved DHCP lease on WS-IT-01](screenshots/dhcp/ws-it-reserved-lease.png)
+![Reserved DHCP lease on WS-IT-01](screenshots/dhcp/ws-it-reserved-lease.png)
 
 
 
@@ -162,7 +144,7 @@ A DHCP reservation was configured for WS-IT-01, assigning `192.168.119.100` to t
 
 
 
-\## DNS
+## DNS
 
 
 
@@ -171,18 +153,14 @@ DNS services are distributed across W1, U1, and U3 to support Active Directory, 
 
 
 | Server | DNS Role |
-
 |---|---|
-
 | W1 (`192.168.119.4`) | Primary AD-integrated DNS for `mmajidi8.net` and `\_msdcs.mmajidi8.net`; forwards external queries to U1 |
-
 | U1 (`192.168.119.3`) | Caching recursive DNS resolver for external name resolution |
-
 | U3 (`192.168.119.68`) | Primary DNS for `sub.mmajidi8.net` and the reverse zone; secondary DNS for the AD zones |
 
 
 
-\### Active Directory DNS
+### Active Directory DNS
 
 
 
@@ -190,15 +168,15 @@ W1 hosts the primary AD-integrated DNS zones for `mmajidi8.net` and `\_msdcs.mma
 
 
 
-!\[Active Directory DNS zone records](screenshots/dns/domain-zone-records.png)
+![Active Directory DNS zone records](screenshots/dns/domain-zone-records.png)
 
 
 
-!\[Active Directory \_msdcs zone](screenshots/dns/msdcs-zone.png)
+![Active Directory \_msdcs zone](screenshots/dns/msdcs-zone.png)
 
 
 
-\### Delegated Subdomain and Secondary DNS
+### Delegated Subdomain and Secondary DNS
 
 
 
@@ -210,15 +188,15 @@ This allows U3 to serve records from the Windows-hosted Active Directory DNS zon
 
 
 
-!\[DNS subdomain delegation](screenshots/dns/subdomain-delegation.png)
+![DNS subdomain delegation](screenshots/dns/subdomain-delegation.png)
 
 
 
-!\[BIND zones configured on U3](screenshots/dns/u3-bind-zones.png)
+![BIND zones configured on U3](screenshots/dns/u3-bind-zones.png)
 
 
 
-\### Reverse DNS
+### Reverse DNS
 
 
 
@@ -230,7 +208,7 @@ W1 has an AD-integrated conditional forwarder for this reverse zone pointing to 
 
 
 
-\### External DNS Resolution and Caching
+### External DNS Resolution and Caching
 
 
 
@@ -250,11 +228,11 @@ DNS caching on U1 was verified by querying the same external domain repeatedly. 
 
 
 
-!\[DNS cache verification on U1](screenshots/dns/u1-dns-cache.png)
+![DNS cache verification on U1](screenshots/dns/u1-dns-cache.png)
 
 
 
-\### DNS Verification
+### DNS Verification
 
 
 
@@ -262,7 +240,7 @@ Forward and reverse DNS resolution were tested across the environment to confirm
 
 
 
-!\[DNS verification on U3](screenshots/dns/u3-dns-verification.png)
+![DNS verification on U3](screenshots/dns/u3-dns-verification.png)
 
 
 
@@ -270,7 +248,7 @@ Forward and reverse DNS resolution were tested across the environment to confirm
 
 
 
-\## Linux Routing and Firewalling
+## Linux Routing and Firewalling
 
 
 
@@ -278,7 +256,7 @@ U1 and U2 provide the routing and firewall functions that connect the internal n
 
 
 
-\### U1 — Gateway and Internet Access
+### U1 — Gateway and Internet Access
 
 
 
@@ -290,15 +268,15 @@ IPv4 forwarding is enabled on U1, and nftables provides stateful firewall filter
 
 
 
-!\[U1 network configuration and routing](screenshots/linux/u1-network-routing.png)
+![U1 network configuration and routing](screenshots/linux/u1-network-routing.png)
 
 
 
-!\[U1 firewall and NAT configuration](screenshots/linux/u1-firewall-nat.png)
+![U1 firewall and NAT configuration](screenshots/linux/u1-firewall-nat.png)
 
 
 
-\### U2 — Inter-Subnet Routing
+### U2 — Inter-Subnet Routing
 
 
 
@@ -306,9 +284,9 @@ U2 connects the two internal `/26` subnets using two network interfaces:
 
 
 
-\- `192.168.119.5/26` on Subnet 1
+- `192.168.119.5/26` on Subnet 1
 
-\- `192.168.119.67/26` on Subnet 2
+- `192.168.119.67/26` on Subnet 2
 
 
 
@@ -316,11 +294,11 @@ IPv4 forwarding allows U2 to route traffic between the two networks. Its default
 
 
 
-!\[U2 network configuration and routing](screenshots/linux/u2-network-routing.png)
+![U2 network configuration and routing](screenshots/linux/u2-network-routing.png)
 
 
 
-\### Firewall Policy
+### Firewall Policy
 
 
 
@@ -332,11 +310,11 @@ U2 permits established and related connections, required DHCP relay traffic, Sam
 
 
 
-!\[U2 nftables firewall](screenshots/linux/u2-firewall.png)
+![U2 nftables firewall](screenshots/linux/u2-firewall.png)
 
 
 
-The complete firewall and network configurations are available in the \[`configs`](configs/) directory.
+The complete firewall and network configurations are available in the [`configs`](configs/) directory.
 
 
 
@@ -344,7 +322,7 @@ The complete firewall and network configurations are available in the \[`configs
 
 
 
-\## Samba File Services and Access Control
+## Samba File Services and Access Control
 
 
 
@@ -357,13 +335,9 @@ Three departmental shares were created:
 
 
 | Share | Path | Authorized AD Group |
-
 |---|---|---|
-
 | Finance | `/srv/shares/finance` | Finance |
-
 | HR | `/srv/shares/hr` | HR |
-
 | IT | `/srv/shares/it` | IT |
 
 
@@ -372,7 +346,7 @@ Samba restricts each share using the corresponding Active Directory security gro
 
 
 
-\### Active Directory Integration
+### Active Directory Integration
 
 
 
@@ -380,11 +354,11 @@ U2 was joined to the Windows domain as a member server. Samba and Winbind were c
 
 
 
-!\[U2 Active Directory integration](screenshots/samba/u2-ad-integration.png)
+![U2 Active Directory integration](screenshots/samba/u2-ad-integration.png)
 
 
 
-\### Department-Based Access Control
+### Department-Based Access Control
 
 
 
@@ -392,7 +366,7 @@ Access was tested using domain accounts from different departments. John Smith, 
 
 
 
-!\[Authorized access to IT share](screenshots/samba/it-share-authorized.png)
+![Authorized access to IT share](screenshots/samba/it-share-authorized.png)
 
 
 
@@ -400,7 +374,7 @@ The same account was denied access to the HR share because it was not a member o
 
 
 
-!\[Unauthorized access to HR share](screenshots/samba/hr-share-denied.png)
+![Unauthorized access to HR share](screenshots/samba/hr-share-denied.png)
 
 
 
@@ -408,7 +382,7 @@ Access to the Linux-hosted file shares is therefore controlled through Active Di
 
 
 
-The Samba configuration is available at \[`configs/u2/smb.conf`](configs/u2/smb.conf).
+The Samba configuration is available at [`configs/u2/smb.conf`](configs/u2/smb.conf).
 
 
 
@@ -416,7 +390,7 @@ The Samba configuration is available at \[`configs/u2/smb.conf`](configs/u2/smb.
 
 
 
-\## Help Desk Administration Scenarios
+## Help Desk Administration Scenarios
 
 
 
@@ -424,7 +398,7 @@ Several common Help Desk and Active Directory support scenarios were performed u
 
 
 
-\### Password Reset and Required Password Change
+### Password Reset and Required Password Change
 
 
 
@@ -432,7 +406,7 @@ John Smith's domain password was reset through Active Directory Users and Comput
 
 
 
-!\[Active Directory password reset](screenshots/help-desk/password-reset.png)
+![Active Directory password reset](screenshots/help-desk/password-reset.png)
 
 
 
@@ -440,11 +414,11 @@ When John next authenticated to the domain, Windows required a password change b
 
 
 
-!\[Password change required at logon](screenshots/help-desk/password-change-required.png)
+![Password change required at logon](screenshots/help-desk/password-change-required.png)
 
 
 
-\### Account Lockout
+### Account Lockout
 
 
 
@@ -452,7 +426,7 @@ A domain account lockout policy was configured with a threshold of five failed l
 
 
 
-!\[Active Directory account lockout policy](screenshots/help-desk/account-lockout-policy.png)
+![Active Directory account lockout policy](screenshots/help-desk/account-lockout-policy.png)
 
 
 
@@ -460,11 +434,11 @@ The policy was tested using Daniel Chen's account. Repeated incorrect authentica
 
 
 
-!\[Locked Active Directory account](screenshots/help-desk/account-locked.png)
+![Locked Active Directory account](screenshots/help-desk/account-locked.png)
 
 
 
-\### Disabled Account
+### Disabled Account
 
 
 
@@ -472,7 +446,7 @@ Sarah Dawson's account was deliberately disabled in Active Directory to test the
 
 
 
-!\[Disabled account login attempt](screenshots/help-desk/disabled-account-login.png)
+![Disabled account login attempt](screenshots/help-desk/disabled-account-login.png)
 
 
 
@@ -480,11 +454,11 @@ The account was then re-enabled in Active Directory and normal domain authentica
 
 
 
-!\[Active Directory account re-enabled](screenshots/help-desk/account-reenabled.png)
+![Active Directory account re-enabled](screenshots/help-desk/account-reenabled.png)
 
 
 
-\### Security Group and Resource Access Changes
+### Security Group and Resource Access Changes
 
 
 
@@ -496,15 +470,15 @@ After the group membership change and a new user logon session, John was able to
 
 
 
-!\[John Smith Finance group membership](screenshots/help-desk/john-finance-membership.png)
+![John Smith Finance group membership](screenshots/help-desk/john-finance-membership.png)
 
 
 
-!\[Finance share access after group change](screenshots/help-desk/finance-access-after-transfer.png)
+![Finance share access after group change](screenshots/help-desk/finance-access-after-transfer.png)
 
 
 
-!\[IT share denied after group change](screenshots/help-desk/it-access-denied-after-transfer.png)
+![IT share denied after group change](screenshots/help-desk/it-access-denied-after-transfer.png)
 
 
 
@@ -516,7 +490,7 @@ After testing, John was returned to the IT security group to restore his origina
 
 
 
-\## Troubleshooting
+## Troubleshooting
 
 
 
@@ -524,7 +498,7 @@ Several issues encountered while building and validating the environment require
 
 
 
-\### Samba File Permission Issue
+### Samba File Permission Issue
 
 
 
@@ -544,13 +518,13 @@ The affected file permissions were then corrected to `660`, aligning the file wi
 
 
 
-!\[Samba file permission issue](screenshots/troubleshooting/samba-permission-issue.png)
+![Samba file permission issue](screenshots/troubleshooting/samba-permission-issue.png)
 
 
 
 
 
-\### Active Directory DNS Discovery
+### Active Directory DNS Discovery
 
 
 
@@ -578,49 +552,45 @@ The issue showed that network connectivity to the domain controller alone was no
 
 
 
-\## Configuration Files
+## Configuration Files
 
 
 
-The Linux server configurations used in the environment are included in the \[`configs`](configs/) directory.
+The Linux server configurations used in the environment are included in the [`configs`](configs/) directory.
 
 
 
 | Server | Configuration |
-
 |---|---|
-
-| U1 | \[Netplan](configs/u1/netplan.yaml) · \[nftables](configs/u1/nftables.rules) · \[BIND](configs/u1/named.conf.options) |
-
-| U2 | \[Netplan](configs/u2/netplan.yaml) · \[nftables](configs/u2/nftables.rules) · \[Samba](configs/u2/smb.conf) · \[DHCP Relay](configs/u2/isc-dhcp-relay) |
-
-| U3 | \[Netplan](configs/u3/netplan.yaml) · \[BIND Zones](configs/u3/named.conf.local) · \[BIND Options](configs/u3/named.conf.options) · \[Forward Zone](configs/u3/db.sub.mmajidi8.net) · \[Reverse Zone](configs/u3/db.119.168.192) |
+| U1 | [Netplan](configs/u1/netplan.yaml) · [nftables](configs/u1/nftables.rules) · [BIND](configs/u1/named.conf.options) |
+| U2 | [Netplan](configs/u2/netplan.yaml) · [nftables](configs/u2/nftables.rules) · [Samba](configs/u2/smb.conf) · [DHCP Relay](configs/u2/isc-dhcp-relay) |
+| U3 | [Netplan](configs/u3/netplan.yaml) · [BIND Zones](configs/u3/named.conf.local) · [BIND Options](configs/u3/named.conf.options) · [Forward Zone](configs/u3/db.sub.mmajidi8.net) · [Reverse Zone](configs/u3/db.119.168.192) |
 
 
 
-\## Skills Demonstrated
+## Skills Demonstrated
 
 
 
-\- Active Directory user, group, OU, and workstation administration
+- Active Directory user, group, OU, and workstation administration
 
-\- Domain joining and centralized user authentication
+- Domain joining and centralized user authentication
 
-\- Password resets, account lockouts, disabled accounts, and group membership changes
+- Password resets, account lockouts, disabled accounts, and group membership changes
 
-\- Windows Server DNS and DHCP administration
+- Windows Server DNS and DHCP administration
 
-\- DHCP relay across routed networks
+- DHCP relay across routed networks
 
-\- DNS delegation, secondary zones, conditional forwarding, recursive resolution, and caching
+- DNS delegation, secondary zones, conditional forwarding, recursive resolution, and caching
 
-\- Linux network configuration and static routing
+- Linux network configuration and static routing
 
-\- nftables firewalling and NAT
+- nftables firewalling and NAT
 
-\- Active Directory-integrated Samba file sharing
+- Active Directory-integrated Samba file sharing
 
-\- Group-based access control and Linux file permissions
+- Group-based access control and Linux file permissions
 
-\- Windows and Linux network troubleshooting
+- Windows and Linux network troubleshooting
 
